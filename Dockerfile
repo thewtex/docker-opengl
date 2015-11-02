@@ -8,6 +8,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   openbox \
   supervisor \
   x11vnc \
+  xinit \
   xserver-xorg-video-dummy \
   xserver-xorg-input-void \
   websockify && \
@@ -17,5 +18,7 @@ WORKDIR /usr/src
 RUN git clone https://github.com/kanaka/noVNC.git && \
   cd noVNC && \
   git checkout 6a90803feb124791960e3962e328aa3cfb729aeb
+
+COPY etc /etc
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
