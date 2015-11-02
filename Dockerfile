@@ -14,11 +14,17 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   websockify && \
   rm -f /usr/share/applications/x11vnc.desktop
 
-WORKDIR /usr/src
+COPY etc /etc
+
+RUN useradd -m -s /bin/bash user
+USER user
+
+RUN mkdir -p /home/user/src
+WORKDIR /home/user/src
 RUN git clone https://github.com/kanaka/noVNC.git && \
   cd noVNC && \
   git checkout 6a90803feb124791960e3962e328aa3cfb729aeb
 
-COPY etc /etc
-
+USER root
+WORKDIR /root
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
