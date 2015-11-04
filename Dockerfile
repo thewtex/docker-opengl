@@ -4,9 +4,11 @@ MAINTAINER Matt McCormick <matt.mccormick@kitware.com>
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   git \
   libgl1-mesa-dri \
+  menu \
   mesa-utils \
   openbox \
   supervisor \
+  x11-xserver-utils \
   x11vnc \
   xinit \
   xserver-xorg-video-dummy \
@@ -18,6 +20,8 @@ COPY etc /etc
 
 RUN useradd -m -s /bin/bash user
 USER user
+
+RUN cp /etc/skel/.xinitrc /home/user/
 
 RUN mkdir -p /home/user/src
 WORKDIR /home/user/src
