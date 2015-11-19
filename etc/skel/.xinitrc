@@ -1,4 +1,4 @@
 #!/bin/bash
 
-xsetroot -gray
+xsetroot -solid "#333333"
 openbox
