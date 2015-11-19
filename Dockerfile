@@ -27,7 +27,8 @@ RUN cp /etc/skel/.xinitrc /home/user/
 USER root
 RUN git clone https://github.com/kanaka/noVNC.git /opt/noVNC && \
   cd /opt/noVNC && \
-  git checkout 6a90803feb124791960e3962e328aa3cfb729aeb
+  git checkout 6a90803feb124791960e3962e328aa3cfb729aeb && \
+  ln -s vnc_auto.html index.html
 
 # noVNC (http server) is on 6080, and the VNC server is on 5900
 EXPOSE 6080 5900
