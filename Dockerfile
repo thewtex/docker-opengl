@@ -10,6 +10,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   openbox \
   sudo \
   supervisor \
+  tint2 \
   x11-xserver-utils \
   x11vnc \
   xinit \
