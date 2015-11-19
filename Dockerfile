@@ -23,10 +23,8 @@ USER user
 
 RUN cp /etc/skel/.xinitrc /home/user/
 
-RUN mkdir -p /home/user/src
-WORKDIR /home/user/src
-RUN git clone https://github.com/kanaka/noVNC.git && \
-  cd noVNC && \
+RUN git clone https://github.com/kanaka/noVNC.git /opt/noVNC && \
+  cd /opt/noVNC && \
   git checkout 6a90803feb124791960e3962e328aa3cfb729aeb
 
 USER root
