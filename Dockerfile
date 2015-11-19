@@ -6,6 +6,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   libgl1-mesa-dri \
   menu \
   mesa-utils \
+  net-tools \
   openbox \
   supervisor \
   x11-xserver-utils \
@@ -16,17 +17,22 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   websockify && \
   rm -f /usr/share/applications/x11vnc.desktop
 
-COPY etc /etc
+COPY etc/skel/.xinitrc /etc/skel/.xinitrc
 
 RUN useradd -m -s /bin/bash user
 USER user
 
 RUN cp /etc/skel/.xinitrc /home/user/
 
+USER root
 RUN git clone https://github.com/kanaka/noVNC.git /opt/noVNC && \
   cd /opt/noVNC && \
   git checkout 6a90803feb124791960e3962e328aa3cfb729aeb
 
-USER root
+# noVNC (http server) is on 6080, and the VNC server is on 5900
+EXPOSE 6080 5900
+
+COPY etc /etc
+
 WORKDIR /root
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
