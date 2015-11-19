@@ -8,6 +8,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   mesa-utils \
   net-tools \
   openbox \
+  sudo \
   supervisor \
   x11-xserver-utils \
   x11vnc \
@@ -23,8 +24,10 @@ RUN useradd -m -s /bin/bash user
 USER user
 
 RUN cp /etc/skel/.xinitrc /home/user/
-
 USER root
+RUN echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/user
+
+
 RUN git clone https://github.com/kanaka/noVNC.git /opt/noVNC && \
   cd /opt/noVNC && \
   git checkout 6a90803feb124791960e3962e328aa3cfb729aeb && \
