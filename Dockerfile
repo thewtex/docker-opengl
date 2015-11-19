@@ -39,5 +39,7 @@ EXPOSE 6080 5900
 
 COPY etc /etc
 
+ENV DISPLAY :0
+
 WORKDIR /root
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
