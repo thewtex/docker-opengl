@@ -1,12 +1,49 @@
 #!/bin/sh
 
-# This script is a convenience script to run the container. It:
-#
-# - Makes sure docker is available
-# - On Windows and Mac OSX, creates a docker machine if required
-# - Informs the user of the URL to access the container with a web browser
-# - Stops and removes containers from previous runs to avoid conflicts
-# - Mounts the present working directory to /home/user/work on Linux and Mac OSX
+show_help() {
+cat << EOF
+Usage: ${0##*/} [-h] [-c CONTAINER] [-i IMAGE]
+
+This script is a convenience script to run Docker images based on
+thewtex/opengl. It:
+
+- Makes sure docker is available
+- On Windows and Mac OSX, creates a docker machine if required
+- Informs the user of the URL to access the container with a web browser
+- Stops and removes containers from previous runs to avoid conflicts
+- Mounts the present working directory to /home/user/work on Linux and Mac OSX
+
+Options:
+
+  -h             Display this help and exit
+  -c             Container name to use
+  -i             Image name
+EOF
+}
+
+container=opengl
+image=thewtex/opengl
+
+OPTIND=1
+while getopts "obs:h" opt; do
+  case "$opt" in
+    h)
+      show_help
+      exit 0
+      ;;
+    c)
+      container=$OPTARG
+      ;;
+    i)
+      image=$OPTARG
+      ;;
+    '?')
+      show_help >&2
+      exit 1
+      ;;
+  esac
+done
+
 
 which docker 2>&1 >/dev/null
 if [ $? -ne 0 ]; then
@@ -28,12 +65,12 @@ fi
 _IP=$(docker-machine ip ${_VM} 2> /dev/null || echo "localhost")
 _URL="http://${_IP}:6080"
 
-_RUNNING=$(docker ps -a -q --filter "name=opengl")
+_RUNNING=$(docker ps -a -q --filter "name=$container")
 if [ -n "$_RUNNING" ]; then
 	echo "Stopping and removing the previous session..."
 	echo ""
-	docker stop opengl >/dev/null
-	docker rm opengl >/dev/null
+	docker stop $container >/dev/null
+	docker rm $container >/dev/null
 fi
 
 echo ""
@@ -49,14 +86,14 @@ if [ "${_OS}" = "Linux" ] || [ "${_OS}" = "Darwin" ]; then
 fi
 docker run \
   -d \
-  --name opengl \
+  --name $container \
   ${_MOUNT_LOCAL} \
   -p 6080:6080 \
-  thewtex/opengl >/dev/null
+  $image >/dev/null
 
-result=$(docker wait opengl)
+result=$(docker wait $container)
 
-docker cp opengl:/var/log/supervisor/graphical-app-launcher.log /tmp/docker-opengl-graphical-app.log
+docker cp $container:/var/log/supervisor/graphical-app-launcher.log /tmp/docker-opengl-graphical-app.log
 cat /tmp/docker-opengl-graphical-app.log
 rm /tmp/docker-opengl-graphical-app.log
 exit $result
