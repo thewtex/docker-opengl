@@ -16,32 +16,40 @@ thewtex/opengl. It:
 Options:
 
   -h             Display this help and exit
-  -c             Container name to use
-  -i             Image name
+  -c             Container name to use (default opengl)
+  -i             Image name (default thewtex/opengl)
+  -p             Port to expose HTTP server (default 6080)
 EOF
 }
 
 container=opengl
 image=thewtex/opengl
+port=6080
 
-OPTIND=1
-while getopts "obs:h" opt; do
-  case "$opt" in
-    h)
-      show_help
-      exit 0
-      ;;
-    c)
-      container=$OPTARG
-      ;;
-    i)
-      image=$OPTARG
-      ;;
-    '?')
-      show_help >&2
-      exit 1
-      ;;
-  esac
+while [ $# -gt 1 ]; do
+	case "$1" in
+		-h)
+			show_help
+			exit 0
+			;;
+		-c)
+			container=$2
+			shift
+			;;
+		-i)
+			image=$2
+			shift
+			;;
+		-p)
+			port=$2
+			shift
+			;;
+		'?')
+			show_help >&2
+			exit 1
+			;;
+	esac
+	shift
 done
 
 
@@ -63,9 +71,9 @@ if [ "${_OS}" != "Linux" ]; then
 fi
 
 _IP=$(docker-machine ip ${_VM} 2> /dev/null || echo "localhost")
-_URL="http://${_IP}:6080"
+_URL="http://${_IP}:$port"
 
-_RUNNING=$(docker ps -a -q --filter "name=$container")
+_RUNNING=$(docker ps -a -q --filter "name=${container}")
 if [ -n "$_RUNNING" ]; then
 	echo "Stopping and removing the previous session..."
 	echo ""
@@ -88,7 +96,7 @@ docker run \
   -d \
   --name $container \
   ${_MOUNT_LOCAL} \
-  -p 6080:6080 \
+  -p $port:6080 \
   $image >/dev/null
 
 result=$(docker wait $container)
