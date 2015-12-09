@@ -8,7 +8,7 @@
 # - Stops and removes containers from previous runs to avoid conflicts
 # - Mounts the present working directory to /home/user/work on Linux and Mac OSX
 
-which docker &> /dev/null
+which docker 2>&1 >/dev/null
 if [ $? -ne 0 ]; then
 	echo "Error: the 'docker' command was not found.  Please install docker."
 	exit 1
@@ -28,7 +28,7 @@ fi
 _IP=$(docker-machine ip ${_VM} 2> /dev/null || echo "localhost")
 _URL="http://${_IP}:6080"
 
-_RUNNING=$(docker ps -q --filter "name=opengl")
+_RUNNING=$(docker ps -a -q --filter "name=opengl")
 if [ -n "$_RUNNING" ]; then
 	echo "Stopping and removing the previous session..."
 	echo ""
@@ -41,7 +41,6 @@ echo "Setting up the graphical application container..."
 echo ""
 echo "Point your web browser to ${_URL}"
 echo ""
-echo ""
 
 _PWD_DIR="$(pwd)"
 _MOUNT_LOCAL=""
@@ -53,12 +52,13 @@ docker run \
   --name opengl \
   ${_MOUNT_LOCAL} \
   -p 6080:6080 \
-  thewtex/opengl &> /dev/null
+  thewtex/opengl >/dev/null
 
-if [ "${_OS}" != "Linux" ] && [ "${_OS}" != "Darwin" ]; then
-	# Pause on Windows if the script was double-clicked instead of executed
-	# from the terminal so the URL can be read
-	read -p "Press any key to continue..." anykey
-fi
+result=$(docker wait opengl)
+
+docker cp opengl:/var/log/supervisor/graphical-app-launcher.log /tmp/docker-opengl-graphical-app.log
+cat /tmp/docker-opengl-graphical-app.log
+rm /tmp/docker-opengl-graphical-app.log
+exit $result
 
 # vim: noexpandtab shiftwidth=4 tabstop=4 softtabstop=0

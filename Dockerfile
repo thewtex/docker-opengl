@@ -8,6 +8,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   mesa-utils \
   net-tools \
   openbox \
+  python-pip \
   sudo \
   supervisor \
   tint2 \
@@ -17,7 +18,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   xserver-xorg-video-dummy \
   xserver-xorg-input-void \
   websockify && \
-  rm -f /usr/share/applications/x11vnc.desktop
+  rm -f /usr/share/applications/x11vnc.desktop && \
+  pip install supervisor-stdout
 
 COPY etc/skel/.xinitrc /etc/skel/.xinitrc
 
@@ -38,6 +40,7 @@ RUN git clone https://github.com/kanaka/noVNC.git /opt/noVNC && \
 EXPOSE 6080 5900
 
 COPY etc /etc
+COPY usr /usr
 
 ENV DISPLAY :0
 
