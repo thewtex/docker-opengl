@@ -101,9 +101,7 @@ docker run \
 
 result=$(docker wait $container)
 
-docker cp $container:/var/log/supervisor/graphical-app-launcher.log /tmp/docker-opengl-graphical-app.log
-cat /tmp/docker-opengl-graphical-app.log
-rm /tmp/docker-opengl-graphical-app.log
+docker cp $container:/var/log/supervisor/graphical-app-launcher.log - | tar xO
 exit $result
 
 # vim: noexpandtab shiftwidth=4 tabstop=4 softtabstop=0

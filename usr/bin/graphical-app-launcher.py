@@ -10,4 +10,5 @@ if __name__ == '__main__':
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdoutdata, stderrordata = process.communicate()
         print(stdoutdata)
-        subprocess.call(['sudo', 'supervisorctl', 'shutdown'])
+        subprocess.call(['sudo', 'supervisorctl', 'shutdown'],
+                        stdout=subprocess.PIPE)
