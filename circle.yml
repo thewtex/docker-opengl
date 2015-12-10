@@ -1,0 +1,13 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker pull thewtex/opengl
+
+test:
+  override:
+    - ~/docker-opengl/build.sh
+    - ~/docker-opengl/example/build.sh
