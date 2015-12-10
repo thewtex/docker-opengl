@@ -5,7 +5,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   git \
   libgl1-mesa-dri \
   menu \
-  mesa-utils \
   net-tools \
   openbox \
   python-pip \
