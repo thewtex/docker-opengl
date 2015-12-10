@@ -26,7 +26,7 @@ container=opengl
 image=thewtex/opengl
 port=6080
 
-while [ $# -gt 1 ]; do
+while [ $# -gt 0 ]; do
 	case "$1" in
 		-h)
 			show_help
