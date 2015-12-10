@@ -6,6 +6,7 @@ dependencies:
   override:
     - docker info
     - docker pull thewtex/opengl
+    - docker pull thewtex/opengl-example
 
 test:
   override:
