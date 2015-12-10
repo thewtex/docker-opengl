@@ -13,8 +13,9 @@ Overview
 
 This Docker image supports portable, CPU-based graphical application
 rendering, including rendering OpenGL-based applications. An X session is
-running on display `:0` and can be viewed through HTML5 viewer served at port
-6080.
+running on display `:0` and can be viewed through HTML5 viewer on any device
+with a modern web browser (Mac OSX, Windows, Linux, Android, iOS, ChromeOS,
+...).
 
 Quick-start
 -----------
