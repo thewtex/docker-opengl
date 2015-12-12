@@ -18,7 +18,8 @@ Options:
   -h             Display this help and exit
   -c             Container name to use (default opengl)
   -i             Image name (default thewtex/opengl)
-  -p             Port to expose HTTP server (default 6080)
+  -p             Port to expose HTTP server (default 6080), if an empty
+                 string, the port is not exposed
 EOF
 }
 
@@ -92,11 +93,16 @@ _MOUNT_LOCAL=""
 if [ "${_OS}" = "Linux" ] || [ "${_OS}" = "Darwin" ]; then
 	_MOUNT_LOCAL=" -v ${_PWD_DIR}:/home/user/work "
 fi
+port_arg=""
+if [ -n "$port" ]; then
+	port_arg="-p $port:6080"
+fi
+
 docker run \
   -d \
   --name $container \
   ${_MOUNT_LOCAL} \
-  -p $port:6080 \
+  $port_arg \
   $image >/dev/null
 
 result=$(docker wait $container)
