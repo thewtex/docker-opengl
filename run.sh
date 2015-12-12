@@ -88,21 +88,25 @@ fi
 ip=$(docker-machine ip ${vm} 2> /dev/null || echo "localhost")
 url="http://${ip}:$port"
 
+cleanup() {
+	docker stop $container >/dev/null
+	docker rm $container >/dev/null
+}
+
 running=$(docker ps -a -q --filter "name=${container}")
 if [ -n "$running" ]; then
 	if [ -z "$quiet" ]; then
 		echo "Stopping and removing the previous session..."
 		echo ""
 	fi
-	docker stop $container >/dev/null
-	docker rm $container >/dev/null
+	cleanup
 fi
 
 if [ -z "$quiet" ]; then
 	echo ""
 	echo "Setting up the graphical application container..."
 	echo ""
-	if [ -n "$quiet" ]; then
+	if [ -n "$port" ]; then
 		echo "Point your web browser to ${url}"
 		echo ""
 	fi
@@ -126,12 +130,20 @@ docker run \
   $extra_run_args \
   $image >/dev/null
 
+set -x
+print_app_output() {
+	docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
+		| tar xO | head -n -1
+	result=$(docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
+		| tar xO | tail -n 1 | cut -c 28-)
+	cleanup
+	exit $result
+}
+
+trap "print_app_output" SIGINT SIGTERM
+
 docker wait $container >/dev/null
 
-docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
-	| tar xO | head -n -1
-result=$(docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
-	| tar xO | tail -n 1 | cut -c 28-)
-exit $result
+print_app_output
 
 # vim: noexpandtab shiftwidth=4 tabstop=4 softtabstop=0
