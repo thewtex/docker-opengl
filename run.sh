@@ -102,8 +102,10 @@ if [ -z "$quiet" ]; then
 	echo ""
 	echo "Setting up the graphical application container..."
 	echo ""
-	echo "Point your web browser to ${url}"
-	echo ""
+	if [ -n "$quiet" ]; then
+		echo "Point your web browser to ${url}"
+		echo ""
+	fi
 fi
 
 pwd_dir="$(pwd)"
