@@ -1,5 +1,11 @@
 #!/bin/sh
 
+container=opengl
+image=thewtex/opengl
+port=6080
+extra_run_args=""
+quiet=""
+
 show_help() {
 cat << EOF
 Usage: ${0##*/} [-h] [-c CONTAINER] [-i IMAGE]
@@ -25,12 +31,6 @@ Options:
   -q             Do not output information messages.
 EOF
 }
-
-container=opengl
-image=thewtex/opengl
-port=6080
-extra_run_args=""
-quiet=""
 
 while [ $# -gt 0 ]; do
 	case "$1" in
