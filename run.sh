@@ -124,9 +124,12 @@ docker run \
   $extra_run_args \
   $image >/dev/null
 
-result=$(docker wait $container)
+docker wait $container >/dev/null
 
-docker cp $container:/var/log/supervisor/graphical-app-launcher.log - | tar xO
+docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
+	| tar xO | head -n -1
+result=$(docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
+	| tar xO | tail -n 1 | cut -c 28-)
 exit $result
 
 # vim: noexpandtab shiftwidth=4 tabstop=4 softtabstop=0

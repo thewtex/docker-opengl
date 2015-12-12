@@ -18,3 +18,5 @@ if __name__ == '__main__':
         print(stdoutdata)
         subprocess.call(['sudo', 'supervisorctl', 'shutdown'],
                         stdout=subprocess.PIPE)
+        return_code = process.returncode
+        print('Graphical app return code: ' + str(return_code))
