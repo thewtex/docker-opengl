@@ -60,22 +60,22 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-_OS=$(uname)
-if [ "${_OS}" != "Linux" ]; then
-	_VM=$(docker-machine active 2> /dev/null || echo "default")
-	if ! docker-machine inspect "${_VM}" &> /dev/null; then
-		echo "Creating machine ${_VM}..."
-		docker-machine -D create -d virtualbox --virtualbox-memory 2048 ${_VM}
+os=$(uname)
+if [ "${os}" != "Linux" ]; then
+	vm=$(docker-machine active 2> /dev/null || echo "default")
+	if ! docker-machine inspect "${vm}" &> /dev/null; then
+		echo "Creating machine ${vm}..."
+		docker-machine -D create -d virtualbox --virtualbox-memory 2048 ${vm}
 	fi
-	docker-machine start ${_VM} > /dev/null
-    eval $(docker-machine env $_VM --shell=sh)
+	docker-machine start ${vm} > /dev/null
+    eval $(docker-machine env $vm --shell=sh)
 fi
 
-_IP=$(docker-machine ip ${_VM} 2> /dev/null || echo "localhost")
-_URL="http://${_IP}:$port"
+ip=$(docker-machine ip ${vm} 2> /dev/null || echo "localhost")
+url="http://${ip}:$port"
 
-_RUNNING=$(docker ps -a -q --filter "name=${container}")
-if [ -n "$_RUNNING" ]; then
+running=$(docker ps -a -q --filter "name=${container}")
+if [ -n "$running" ]; then
 	echo "Stopping and removing the previous session..."
 	echo ""
 	docker stop $container >/dev/null
@@ -85,13 +85,13 @@ fi
 echo ""
 echo "Setting up the graphical application container..."
 echo ""
-echo "Point your web browser to ${_URL}"
+echo "Point your web browser to ${url}"
 echo ""
 
-_PWD_DIR="$(pwd)"
-_MOUNT_LOCAL=""
-if [ "${_OS}" = "Linux" ] || [ "${_OS}" = "Darwin" ]; then
-	_MOUNT_LOCAL=" -v ${_PWD_DIR}:/home/user/work "
+pwd_dir="$(pwd)"
+mount_local=""
+if [ "${os}" = "Linux" ] || [ "${os}" = "Darwin" ]; then
+	mount_local=" -v ${pwd_dir}:/home/user/work "
 fi
 port_arg=""
 if [ -n "$port" ]; then
@@ -101,7 +101,7 @@ fi
 docker run \
   -d \
   --name $container \
-  ${_MOUNT_LOCAL} \
+  ${mount_local} \
   $port_arg \
   $image >/dev/null
 
