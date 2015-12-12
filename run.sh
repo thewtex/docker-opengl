@@ -21,7 +21,7 @@ Options:
   -p             Port to expose HTTP server (default 6080). If an empty
                  string, the port is not exposed.
   -r             Extra arguments to pass to 'docker run'. E.g.
-                 --env="GRAPHICAL_APP=glxgears"
+                 --env="APP=glxgears"
   -q             Do not output information messages.
 EOF
 }
