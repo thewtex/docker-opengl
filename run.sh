@@ -22,6 +22,7 @@ Options:
                  string, the port is not exposed.
   -r             Extra arguments to pass to 'docker run'. E.g.
                  --env="GRAPHICAL_APP=glxgears"
+  -q             Do not output information messages.
 EOF
 }
 
@@ -29,6 +30,7 @@ container=opengl
 image=thewtex/opengl
 port=6080
 extra_run_args=""
+quiet=""
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -52,6 +54,9 @@ while [ $# -gt 0 ]; do
 			extra_run_args="$extra_run_args $2"
 			shift
 			;;
+		-q)
+			quiet=1
+			;;
 		'?')
 			show_help >&2
 			exit 1
@@ -71,7 +76,9 @@ os=$(uname)
 if [ "${os}" != "Linux" ]; then
 	vm=$(docker-machine active 2> /dev/null || echo "default")
 	if ! docker-machine inspect "${vm}" &> /dev/null; then
-		echo "Creating machine ${vm}..."
+		if [ -z "$quiet" ]; then
+			echo "Creating machine ${vm}..."
+		fi
 		docker-machine -D create -d virtualbox --virtualbox-memory 2048 ${vm}
 	fi
 	docker-machine start ${vm} > /dev/null
@@ -83,17 +90,21 @@ url="http://${ip}:$port"
 
 running=$(docker ps -a -q --filter "name=${container}")
 if [ -n "$running" ]; then
-	echo "Stopping and removing the previous session..."
-	echo ""
+	if [ -z "$quiet" ]; then
+		echo "Stopping and removing the previous session..."
+		echo ""
+	fi
 	docker stop $container >/dev/null
 	docker rm $container >/dev/null
 fi
 
-echo ""
-echo "Setting up the graphical application container..."
-echo ""
-echo "Point your web browser to ${url}"
-echo ""
+if [ -z "$quiet" ]; then
+	echo ""
+	echo "Setting up the graphical application container..."
+	echo ""
+	echo "Point your web browser to ${url}"
+	echo ""
+fi
 
 pwd_dir="$(pwd)"
 mount_local=""
