@@ -2,6 +2,9 @@
 
 import os
 import subprocess
+import time
+import sys
+import signal
 
 if __name__ == '__main__':
     if os.environ.has_key('APP'):
@@ -14,9 +17,22 @@ if __name__ == '__main__':
 
         process = subprocess.Popen(command, shell=True,
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        stdoutdata, stderrordata = process.communicate()
-        print(stdoutdata)
-        subprocess.call(['sudo', 'supervisorctl', 'shutdown'],
-                        stdout=subprocess.PIPE)
-        return_code = process.returncode
-        print('Graphical app return code: ' + str(return_code))
+
+        def print_return_code_and_shutdown(return_code):
+            for line in process.stdout.readlines():
+                sys.stdout.write(line)
+            print('Graphical app return code: ' + str(return_code))
+            subprocess.call(['sudo', 'supervisorctl', 'shutdown'],
+                            stdout=subprocess.PIPE)
+            sys.exit(return_code)
+
+        def signal_handler(signum, frame):
+            print_return_code_and_shutdown(128 + signum)
+        signal.signal(signal.SIGTERM, signal_handler)
+
+        while(process.poll() == None):
+            for line in process.stdout.readlines():
+                sys.stdout.write(line)
+            time.sleep(1)
+
+        print_return_code_and_shutdown(process.returncode)

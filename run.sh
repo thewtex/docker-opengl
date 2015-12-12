@@ -130,7 +130,6 @@ docker run \
   $extra_run_args \
   $image >/dev/null
 
-set -x
 print_app_output() {
 	docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
 		| tar xO | head -n -1
@@ -140,7 +139,7 @@ print_app_output() {
 	exit $result
 }
 
-trap "print_app_output" SIGINT SIGTERM
+trap "docker stop $container >/dev/null && print_app_output" SIGINT SIGTERM
 
 docker wait $container >/dev/null
 
