@@ -15,17 +15,20 @@ thewtex/opengl. It:
 
 Options:
 
-  -h             Display this help and exit
-  -c             Container name to use (default opengl)
-  -i             Image name (default thewtex/opengl)
-  -p             Port to expose HTTP server (default 6080), if an empty
-                 string, the port is not exposed
+  -h             Display this help and exit.
+  -c             Container name to use (default opengl).
+  -i             Image name (default thewtex/opengl).
+  -p             Port to expose HTTP server (default 6080). If an empty
+                 string, the port is not exposed.
+  -r             Extra arguments to pass to 'docker run'. E.g.
+                 --env="GRAPHICAL_APP=glxgears"
 EOF
 }
 
 container=opengl
 image=thewtex/opengl
 port=6080
+extra_run_args=""
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -43,6 +46,10 @@ while [ $# -gt 0 ]; do
 			;;
 		-p)
 			port=$2
+			shift
+			;;
+		-r)
+			extra_run_args="$extra_run_args $2"
 			shift
 			;;
 		'?')
@@ -103,6 +110,7 @@ docker run \
   --name $container \
   ${mount_local} \
   $port_arg \
+  $extra_run_args \
   $image >/dev/null
 
 result=$(docker wait $container)
