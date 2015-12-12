@@ -57,7 +57,7 @@ while [ $# -gt 0 ]; do
 		-q)
 			quiet=1
 			;;
-		'?')
+		*)
 			show_help >&2
 			exit 1
 			;;
