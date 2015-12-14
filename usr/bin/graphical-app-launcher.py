@@ -21,7 +21,8 @@ if __name__ == '__main__':
         def print_return_code_and_shutdown(return_code):
             for line in process.stdout.readlines():
                 sys.stdout.write(line)
-            print('Graphical app return code: ' + str(return_code))
+            with open('/tmp/graphical-app-launcher.return_code', 'w') as fp:
+                fp.write(str(return_code))
             subprocess.call(['sudo', 'supervisorctl', 'shutdown'],
                             stdout=subprocess.PIPE)
             sys.exit(return_code)

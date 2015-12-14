@@ -132,9 +132,9 @@ docker run \
 
 print_app_output() {
 	docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
-		| tar xO | head -n -1
-	result=$(docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
-		| tar xO | tail -n 1 | cut -c 28-)
+		| tar xO
+	result=$(docker cp $container:/tmp/graphical-app-launcher.return_code - \
+		| tar xO)
 	cleanup
 	exit $result
 }
