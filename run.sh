@@ -18,6 +18,8 @@ thewtex/opengl. It:
 - Informs the user of the URL to access the container with a web browser
 - Stops and removes containers from previous runs to avoid conflicts
 - Mounts the present working directory to /home/user/work on Linux and Mac OSX
+- Prints out the graphical app output log following execution
+- Exits with the same return code as the graphical app
 
 Options:
 
