@@ -8,7 +8,7 @@ quiet=""
 
 show_help() {
 cat << EOF
-Usage: ${0##*/} [-h] [-c CONTAINER] [-i IMAGE]
+Usage: ${0##*/} [-h] [-q] [-c CONTAINER] [-i IMAGE] [-p PORT] [-r DOCKER_RUN_FLAGS]
 
 This script is a convenience script to run Docker images based on
 thewtex/opengl. It:
@@ -30,7 +30,7 @@ Options:
                  string, the port is not exposed.
   -r             Extra arguments to pass to 'docker run'. E.g.
                  --env="APP=glxgears"
-  -q             Do not output information messages.
+  -q             Do not output informational messages.
 EOF
 }
 

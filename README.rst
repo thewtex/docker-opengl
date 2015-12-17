@@ -45,7 +45,7 @@ For example::
 The `run.sh` script can be used to drive start-up. It is customizable with
 flags::
 
-  Usage: run.sh [-h] [-c CONTAINER] [-i IMAGE]
+  Usage: run.sh [-h] [-q] [-c CONTAINER] [-i IMAGE] [-p PORT] [-r DOCKER_RUN_FLAGS]
 
   This script is a convenience script to run Docker images based on
   thewtex/opengl. It:
@@ -55,6 +55,8 @@ flags::
   - Informs the user of the URL to access the container with a web browser
   - Stops and removes containers from previous runs to avoid conflicts
   - Mounts the present working directory to /home/user/work on Linux and Mac OSX
+  - Prints out the graphical app output log following execution
+  - Exits with the same return code as the graphical app
 
   Options:
 
@@ -65,7 +67,7 @@ flags::
                    string, the port is not exposed.
     -r             Extra arguments to pass to 'docker run'. E.g.
                    --env="APP=glxgears"
-    -q             Do not output information messages.
+    -q             Do not output informational messages.
 
 
 See the *example* directory for a derived image and `run.sh` script that runs the
