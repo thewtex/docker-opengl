@@ -24,9 +24,9 @@ thewtex/opengl. It:
 Options:
 
   -h             Display this help and exit.
-  -c             Container name to use (default opengl).
-  -i             Image name (default thewtex/opengl).
-  -p             Port to expose HTTP server (default 6080). If an empty
+  -c             Container name to use (default ${container}).
+  -i             Image name (default ${image}).
+  -p             Port to expose HTTP server (default ${port}). If an empty
                  string, the port is not exposed.
   -r             Extra arguments to pass to 'docker run'. E.g.
                  --env="APP=glxgears"
