@@ -16,7 +16,7 @@ rendering, including rendering OpenGL-based applications. An X session is
 running on display `:0` and can be viewed through HTML5 viewer on any device
 with a modern web browser (Mac OSX, Windows, Linux, Android, iOS, ChromeOS,
 ...). It can be used to expose a graphical interface from a Docker container
-or to run continuous integration tests that require a graphical enviroment.
+or to run continuous integration tests that require a graphical environment.
 
 Quick-start
 -----------
