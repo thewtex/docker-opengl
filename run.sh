@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 container=opengl
 image=thewtex/opengl
