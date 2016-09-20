@@ -20,7 +20,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   xserver-xorg-input-void \
   websockify && \
   rm -f /usr/share/applications/x11vnc.desktop && \
-  pip install supervisor-stdout
+  pip install supervisor-stdout && \
+  apt-get -y clean
 
 COPY etc/skel/.xinitrc /etc/skel/.xinitrc
 
