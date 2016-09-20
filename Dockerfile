@@ -1,5 +1,7 @@
-FROM debian:8
+FROM dockcross/base:latest
 MAINTAINER Matt McCormick <matt.mccormick@kitware.com>
+
+ENV DEFAULT_DOCKCROSS_IMAGE thewtex/opengl
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   git \
