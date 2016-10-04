@@ -1,7 +1,7 @@
 #!/bin/bash
 
 container=opengl
-image=thewtex/opengl
+image=slicer/opengl
 port=6080
 extra_run_args=""
 quiet=""
