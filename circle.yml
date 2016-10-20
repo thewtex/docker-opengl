@@ -5,10 +5,8 @@ machine:
 dependencies:
   override:
     - docker info
-    - docker pull thewtex/opengl
-    - docker pull thewtex/opengl-example
+    - docker pull thewtex/centos-build:v1.0.0
 
 test:
   override:
     - ~/docker-opengl/build.sh
-    - ~/docker-opengl/example/build.sh
