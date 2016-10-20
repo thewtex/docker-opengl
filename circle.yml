@@ -10,5 +10,11 @@ dependencies:
 
 test:
   override:
-    - ~/docker-opengl/build.sh
-    - ~/docker-opengl/example/build.sh
+    - make build
+    - make example
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - make push
