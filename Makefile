@@ -8,5 +8,11 @@ build:
 	docker build \
 		-t $(ORG)/$(IMAGE) .
 
+example:
+	docker build \
+		-t $(ORG)/$(IMAGE)-example example/
+
 push:
 	docker push $(ORG)/$(IMAGE)
+
+.PHONY: build example push
