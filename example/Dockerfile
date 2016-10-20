@@ -1,7 +1,7 @@
-FROM thewtex/opengl:latest
+FROM slicer/opengl:latest
 MAINTAINER Matt McCormick <matt.mccormick@kitware.com>
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  mesa-utils
+RUN yum update -y && \
+  yum install -y glx-utils
 
 ENV APP "glxgears"
