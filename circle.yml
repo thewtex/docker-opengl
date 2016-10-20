@@ -12,3 +12,9 @@ test:
   override:
     - make build
     - make example
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - make push
