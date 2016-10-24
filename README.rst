@@ -5,8 +5,8 @@ A docker image that supports rendering graphical applications, including OpenGL 
 .. image:: https://circleci.com/gh/thewtex/docker-opengl.svg?style=svg
     :target: https://circleci.com/gh/thewtex/docker-opengl
 
-.. image:: https://badge.imagelayers.io/thewtex/opengl:latest.svg
-  :target: https://imagelayers.io/?images=thewtex/opengl:latest
+.. image:: https://images.microbadger.com/badges/image/thewtex/opengl.svg
+  :target: https://microbadger.com/images/thewtex/opengl
 
 Overview
 --------
