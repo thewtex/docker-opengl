@@ -1,4 +1,4 @@
-FROM slicer/opengl:latest
+FROM thewtex/opengl:centos
 MAINTAINER Matt McCormick <matt.mccormick@kitware.com>
 
 RUN yum update -y && \
