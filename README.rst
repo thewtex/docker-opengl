@@ -1,12 +1,6 @@
-docker-opengl
+docker-opengl:centos
 =============
-A docker image that supports rendering graphical applications, including OpenGL apps.
-
-.. image:: https://circleci.com/gh/thewtex/docker-opengl.svg?style=svg
-    :target: https://circleci.com/gh/thewtex/docker-opengl
-
-.. image:: https://badge.imagelayers.io/thewtex/opengl:latest.svg
-  :target: https://imagelayers.io/?images=thewtex/opengl:latest
+A docker image based on centos 5 that supports rendering graphical applications, including OpenGL apps.
 
 Overview
 --------

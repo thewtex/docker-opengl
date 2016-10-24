@@ -1,7 +1,7 @@
 #!/bin/bash
 
 container=opengl
-image=thewtex/opengl
+image=thewtex/opengl:centos-v1.0.0
 port=6080
 extra_run_args=""
 quiet=""

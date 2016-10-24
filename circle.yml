@@ -5,8 +5,7 @@ machine:
 dependencies:
   override:
     - docker info
-    - docker pull thewtex/opengl
-    - docker pull thewtex/opengl-example
+    - docker pull thewtex/centos-build:v1.0.0
 
 test:
   override:
@@ -15,7 +14,7 @@ test:
 
 deployment:
   hub:
-    branch: master
+    branch: centos
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - make push
