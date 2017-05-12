@@ -20,6 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   xserver-xorg-input-void \
   websockify && \
   rm -f /usr/share/applications/x11vnc.desktop && \
+  apt-get remove -y python-pip && \
+  wget https://bootstrap.pypa.io/get-pip.py && \
+  python get-pip.py && \
   pip install supervisor-stdout && \
   apt-get -y clean
 
