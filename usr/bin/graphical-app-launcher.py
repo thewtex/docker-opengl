@@ -31,9 +31,12 @@ if __name__ == '__main__':
             print_return_code_and_shutdown(128 + signum)
         signal.signal(signal.SIGTERM, signal_handler)
 
-        while(process.poll() == None):
-            for line in process.stdout.readlines():
-                sys.stdout.write(line)
-            time.sleep(1)
+        while True:
+            output = process.stdout.readline()
+            if sys.version_info[0] >= 3:
+                output = output.decode()
+            if output == '' and process.poll() is not None:
+                break
+            print(output.rstrip())
 
         print_return_code_and_shutdown(process.returncode)
