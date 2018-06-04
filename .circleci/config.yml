@@ -1,0 +1,63 @@
+build-settings: &build-settings
+  machine: true
+
+version: 2
+jobs:
+  build-image:
+    <<: *build-settings
+    steps:
+      - restore_cache:
+          keys:
+            - docker-opengl-image-assets-
+      - checkout
+      - run:
+         name: build image
+         command: |
+           docker load -i ~/docker/docker-opengl-image.tar > /dev/null 2>&1 || true
+           docker pull dockcross/base:latest
+           make build
+           mkdir -p ~/docker
+           docker save -o ~/docker/docker-opengl-image.tar thewtex/opengl:debian dockcross/base:latest
+      - save_cache:
+          key: docker-opengl-image-assets-{{ .Revision }}
+          paths: ~/docker/docker-opengl-image.tar
+
+  build-example-image:
+    <<: *build-settings
+    steps:
+      - restore_cache:
+          keys:
+            - docker-opengl-image-assets-{{ .Revision }}
+      - checkout
+      - run:
+         name: build example image
+         command: |
+           docker load -i ~/docker/docker-opengl-image.tar > /dev/null 2>&1 || true
+           make example
+
+  deploy:
+    <<: *build-settings
+    steps:
+      - restore_cache:
+          key: docker-opengl-image-assets-{{ .Revision }}
+      - deploy:
+          name: Push docker-open image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker load -i ~/docker/docker-opengl-image.tar
+              docker login -u $DOCKER_USER -p $DOCKER_PASS
+              docker push thewtex/opengl:debian
+            fi
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build-image
+      - build-example-image:
+          requires:
+            - build-image
+      - deploy:
+          requires:
+            - build-image
+            - build-example-image
