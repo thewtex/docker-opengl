@@ -14,10 +14,11 @@ jobs:
          name: build image
          command: |
            docker load -i ~/docker/docker-opengl-image.tar > /dev/null 2>&1 || true
+           docker pull debian:jessie
            docker pull dockcross/base:latest
            make build
            mkdir -p ~/docker
-           docker save -o ~/docker/docker-opengl-image.tar thewtex/opengl:debian dockcross/base:latest
+           docker save -o ~/docker/docker-opengl-image.tar thewtex/opengl:debian dockcross/base:latest debian:jessie
       - save_cache:
           key: docker-opengl-image-assets-{{ .Revision }}
           paths: ~/docker/docker-opengl-image.tar
