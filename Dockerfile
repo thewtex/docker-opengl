@@ -60,6 +60,9 @@ EXPOSE 6080 5900
 COPY etc /etc
 COPY usr /usr
 
+# For karma testing
+ENV CHROME_BIN "/usr/local/bin/google-chrome"
+
 ENV DISPLAY :0
 
 WORKDIR /root
