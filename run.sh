@@ -127,6 +127,7 @@ fi
 docker run \
   -d \
   --name $container \
+  --privileged \
   ${mount_local} \
   $port_arg \
   $extra_run_args \
