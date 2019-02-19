@@ -1,6 +1,6 @@
 docker-opengl
 =============
-A docker image that supports rendering graphical applications, including OpenGL apps.
+A docker image that supports testing WebGL applications.
 
 .. image:: https://circleci.com/gh/thewtex/docker-opengl.svg?style=svg
     :target: https://circleci.com/gh/thewtex/docker-opengl
@@ -11,67 +11,47 @@ A docker image that supports rendering graphical applications, including OpenGL 
 Overview
 --------
 
+This image supports testing WebGL applications in Chrome and Firefox with
+tools like `karma <https://karma-runner.github.io/latest/index.html>`_.
+
+By default, ``npm run test`` is executed in a Docker image with the current
+source directory mounted.
+
 This Docker image supports portable, CPU-based graphical application
 rendering, including rendering OpenGL-based applications. An X session is
-running on display `:0` and can be viewed through HTML5 viewer on any device
+running on display ``:0`` and can be viewed through HTML5 viewer on any device
 with a modern web browser (Mac OSX, Windows, Linux, Android, iOS, ChromeOS,
-...). It can be used to expose a graphical interface from a Docker container
-or to run continuous integration tests that require a graphical environment.
+...). The graphical interface running in a Docker container or can be debugged
+by visiting a VNC session exposed over a local HTTP port.
 
 Quick-start
 -----------
 
-Execute the `run.sh` script.
+Execute the ``run.sh`` script from your npm package folder.
 
 Details
 --------
 
-By default, the `run.sh` start up the graphical session and points the user to
-a URL on the local host where they can view and interact with the session. On
-application exit, the `run.sh` will print the application's console output and
-exit with the application's return code.
+By default, the ``run.sh`` script executes ``npm run test`` command in the mounted
+current directory.
+
+On application exit, the ``run.sh`` will print the command's console output and
+exit with the command's return code.
+
+To debug, pass the ``-d`` flag, which will start up the graphical session and
+points you to a URL on the local host where you can view and interact with the
+session.
 
 The session runs `Openbox <http://openbox.org>`_ as a non-root user, *user*
 that has password-less sudo privileges. The browser view is an HTML5 viewer
 that talks over websockets to a VNC Server. The VNC Server displays a running
 Xdummy session.
 
-To customize the Docker image for your graphical application, set the `APP`
-environmental variable to the shell command required to start the application.
-For example::
+To customize the test command, create a local shell script that executes the
+desired command, then specify it with ``-r --env=APP=test/my-test-command.sh``.
 
-  ENV APP /usr/bin/my-gui-app
-
-The `run.sh` script can be used to drive start-up. It is customizable with
-flags::
-
-  Usage: run.sh [-h] [-q] [-c CONTAINER] [-i IMAGE] [-p PORT] [-r DOCKER_RUN_FLAGS]
-
-  This script is a convenience script to run Docker images based on
-  thewtex/opengl. It:
-
-  - Makes sure docker is available
-  - On Windows and Mac OSX, creates a docker machine if required
-  - Informs the user of the URL to access the container with a web browser
-  - Stops and removes containers from previous runs to avoid conflicts
-  - Mounts the present working directory to /home/user/work on Linux and Mac OSX
-  - Prints out the graphical app output log following execution
-  - Exits with the same return code as the graphical app
-
-  Options:
-
-    -h             Display this help and exit.
-    -c             Container name to use (default opengl).
-    -i             Image name (default thewtex/opengl).
-    -p             Port to expose HTTP server (default 6080). If an empty
-                   string, the port is not exposed.
-    -r             Extra arguments to pass to 'docker run'. E.g.
-                   --env="APP=glxgears"
-    -q             Do not output informational messages.
-
-
-See the *example* directory for a derived image and `run.sh` script that runs the
-*glxgears* OpenGL demo program.
+The ``run.sh`` script can be used to drive start-up. It is customizable with
+flags: see ``run.sh -h`` for details.
 
 Credits
 -------

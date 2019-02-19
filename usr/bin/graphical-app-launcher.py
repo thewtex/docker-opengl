@@ -7,7 +7,7 @@ import sys
 import signal
 
 if __name__ == '__main__':
-    if os.environ.has_key('APP'):
+    if os.environ.has_key('APP') and os.environ['APP']:
         graphical_app = os.environ['APP']
         if os.environ.has_key('ARGS'):
             extra_args = os.environ['ARGS']

@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Source: https://github.com/thewtex/docker-opengl/tree/webgl
+
 container=webgl
 image=thewtex/opengl:ubuntu1604
 port=6080
 extra_run_args=""
 quiet=""
+debug=""
 
 show_help() {
 cat << EOF
@@ -28,8 +31,8 @@ Options:
   -i             Image name (default ${image}).
   -p             Port to expose HTTP server (default ${port}). If an empty
                  string, the port is not exposed.
-  -r             Extra arguments to pass to 'docker run'. E.g.
-                 --env="APP=glxgears"
+  -r             Extra arguments to pass to 'docker run'. E.g. --env="APP=test/my-test-command.sh"
+  -d             Debug by exposing the graphical environment with noVNC.
   -q             Do not output informational messages.
 EOF
 }
@@ -54,6 +57,10 @@ while [ $# -gt 0 ]; do
 			;;
 		-r)
 			extra_run_args="$extra_run_args $2"
+			shift
+			;;
+		-d)
+			debug=0
 			shift
 			;;
 		-q)
@@ -123,6 +130,10 @@ port_arg=""
 if [ -n "$port" ]; then
 	port_arg="-p $port:6080"
 fi
+debug_arg=""
+if [ -n "$debug" ]; then
+   debug_arg=--env=APP=""
+fi
 
 docker run \
   -d \
@@ -131,7 +142,9 @@ docker run \
   --workdir /home/user/work \
   ${mount_local} \
   $port_arg \
+  --env="APP=npm run test" \
   $extra_run_args \
+  $debug_arg \
   $image >/dev/null
 
 print_app_output() {
