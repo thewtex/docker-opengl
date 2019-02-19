@@ -2,6 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER Matt McCormick <matt.mccormick@kitware.com>
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  apt-transport-https \
   curl \
   git \
   libgl1-mesa-dri \
@@ -31,7 +32,11 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
   apt-get update && \
   apt-get install -y google-chrome-stable
 
-RUN curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash - && \
+RUN curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add - && \
+  VERSION=node_11.x && DISTRO="xenial" && \
+  echo "deb https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee /etc/apt/sources.list.d/nodesource.list && \
+  echo "deb-src https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list && \
+  sudo apt-get update && \
   sudo apt-get install -y nodejs
 
 COPY etc/skel/.xinitrc /etc/skel/.xinitrc
@@ -68,7 +73,7 @@ ARG VCS_REF
 ARG VCS_URL
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name=$IMAGE \
-      org.label-schema.description="An image based on ubuntu:16.04 containing an X_Window_System which supports rendering graphical applications, including OpenGL apps" \
+      org.label-schema.description="An image based on ubuntu:18.04 containing an X_Window_System which supports rendering graphical applications, including OpenGL apps" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_URL \
       org.label-schema.schema-version="1.0"
