@@ -1,9 +1,8 @@
-FROM dockcross/base:latest
+FROM ubuntu:16.04
 MAINTAINER Matt McCormick <matt.mccormick@kitware.com>
 
-ENV DEFAULT_DOCKCROSS_IMAGE thewtex/opengl
-
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  curl \
   git \
   libgl1-mesa-dri \
   menu \
@@ -18,13 +17,22 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   xinit \
   xserver-xorg-video-dummy \
   xserver-xorg-input-void \
-  websockify && \
+  websockify \
+  wget && \
   rm -f /usr/share/applications/x11vnc.desktop && \
   apt-get remove -y python-pip && \
   wget https://bootstrap.pypa.io/get-pip.py && \
   python get-pip.py && \
   pip install supervisor-stdout && \
   apt-get -y clean
+
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+  sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+  apt-get update && \
+  apt-get install -y google-chrome-stable
+
+RUN curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash - && \
+  sudo apt-get install -y nodejs
 
 COPY etc/skel/.xinitrc /etc/skel/.xinitrc
 
@@ -60,7 +68,7 @@ ARG VCS_REF
 ARG VCS_URL
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name=$IMAGE \
-      org.label-schema.description="An image based on debian/jessie containing an X_Window_System which supports rendering graphical applications, including OpenGL apps" \
+      org.label-schema.description="An image based on ubuntu:16.04 containing an X_Window_System which supports rendering graphical applications, including OpenGL apps" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_URL \
       org.label-schema.schema-version="1.0"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-container=opengl
-image=thewtex/opengl
+container=webgl
+image=thewtex/opengl:ubuntu1604
 port=6080
 extra_run_args=""
 quiet=""
