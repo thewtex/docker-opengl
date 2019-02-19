@@ -128,6 +128,7 @@ docker run \
   -d \
   --name $container \
   --privileged \
+  --workdir /home/user/work \
   ${mount_local} \
   $port_arg \
   $extra_run_args \
