@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER Matt McCormick <matt.mccormick@kitware.com>
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -10,7 +10,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   menu \
   net-tools \
   openbox \
-  python-pip \
+  python3-pip \
   sudo \
   supervisor \
   tint2 \
@@ -22,10 +22,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   websockify \
   wget && \
   rm -f /usr/share/applications/x11vnc.desktop && \
-  apt-get remove -y python-pip && \
+  apt-get remove -y python3-pip && \
   wget https://bootstrap.pypa.io/get-pip.py && \
-  python get-pip.py && \
-  pip install supervisor-stdout && \
+  python3 get-pip.py && \
+  pip3 install git+https://github.com/coderanger/supervisor-stdout@973ba19967cdaf46d9c1634d1675fc65b9574f6e && \
   apt-get -y clean
 
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
@@ -34,7 +34,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
   apt-get install -y google-chrome-stable
 
 RUN curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add - && \
-  VERSION=node_11.x && DISTRO="xenial" && \
+  VERSION=node_12.x && DISTRO="focal" && \
   echo "deb https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee /etc/apt/sources.list.d/nodesource.list && \
   echo "deb-src https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list && \
   sudo apt-get update && \
@@ -77,7 +77,7 @@ ARG VCS_REF
 ARG VCS_URL
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name=$IMAGE \
-      org.label-schema.description="An image based on ubuntu:18.04 containing an X_Window_System which supports rendering graphical applications, including OpenGL apps" \
+      org.label-schema.description="An image based on ubuntu:20.04 containing an X_Window_System which supports rendering graphical applications, including OpenGL apps" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_URL \
       org.label-schema.schema-version="1.0"
