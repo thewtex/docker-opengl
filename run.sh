@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Source: https://github.com/thewtex/docker-opengl/tree/webgl
+# Source: https://github.com/thewtex/docker-opengl/tree/napari
 
-container=webgl
-image=thewtex/opengl:ubuntu2004
+container=napari
+image=thewtex/opengl-napari:ubuntu2004
 port=6080
 extra_run_args=""
 quiet=""
@@ -142,7 +142,7 @@ docker run \
   --workdir /home/user/work \
   ${mount_local} \
   $port_arg \
-  --env="APP=npm run test" \
+  --env="APP=/home/user/.local/bin/napari" \
   $extra_run_args \
   $debug_arg \
   $image >/dev/null

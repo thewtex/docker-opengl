@@ -64,6 +64,17 @@ COPY usr /usr
 # For karma testing
 ENV CHROME_BIN "/usr/local/bin/google-chrome"
 
+# For napari
+RUN apt-get install -y python3-pyqt5 \
+  python3-pyqt5.qtsvg \
+  python3-pyqt5.qtopengl \
+  pyqt5-dev-tools
+
+USER user
+RUN pip3 install napari
+ENV PATH="/home/user/.local/bin:${PATH}"
+USER root
+
 ENV DISPLAY :0
 
 WORKDIR /root

@@ -2,7 +2,7 @@
 ORG = thewtex
 
 # Name of image
-IMAGE = opengl
+IMAGE = opengl-napari
 
 # Docker TAG
 TAG = ubuntu2004

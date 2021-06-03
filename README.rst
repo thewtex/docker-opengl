@@ -11,11 +11,7 @@ A docker image that supports testing WebGL applications.
 Overview
 --------
 
-This image supports testing WebGL applications in Chrome and Firefox with
-tools like `karma <https://karma-runner.github.io/latest/index.html>`_.
-
-By default, ``npm run test`` is executed in a Docker image with the current
-source directory mounted.
+This image supports running the `napari <https://napari.org>`_ image viewer.
 
 This Docker image supports portable, CPU-based graphical application
 rendering, including rendering OpenGL-based applications. An X session is
