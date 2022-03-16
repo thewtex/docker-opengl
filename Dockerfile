@@ -42,8 +42,13 @@ RUN curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-ke
 
 COPY etc/skel/.xinitrc /etc/skel/.xinitrc
 
+# Cypress dependencies
+RUN sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+
 RUN useradd -m -s /bin/bash user
 USER user
+
+RUN cd /home/user && npm install --prefix /home/user --global "cypress@9.5.2"
 
 RUN cp /etc/skel/.xinitrc /home/user/
 USER root
